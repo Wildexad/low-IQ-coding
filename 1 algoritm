@@ -1,0 +1,125 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct Node {
+	// Структура узла дерева
+	int value;
+	int count;
+	Node* left;
+	Node* right;
+};
+
+Node* addNode(int input, Node* top) {
+	// Пользовательская функция
+	// Вход: значение узла, название дерева
+	// Выход: добавляется структура нового узла
+	if (top == nullptr) {
+		top = new Node;
+		top->value = input;
+		top->count = 1;
+		top->left = nullptr;
+		top->right = nullptr;
+	}
+	else if (input == top->value) {
+		top->count += 1;
+	}
+	else if (input < top->value) {
+		top->left = addNode(input, top->left);
+	}
+	else {
+		top->right = addNode(input, top->right);
+	}
+	return top;
+}
+
+int depthTreeSys(int counter, Node* top) {
+	// Внутренняя функция
+	// Вход: 1, название дерева
+	if (top != nullptr) {
+		if (top->left == nullptr && top->right == nullptr) {
+			return counter;
+		}
+		else if (top->left == nullptr) {
+			return depthTreeSys(counter + 1, top->right);
+		}
+		else if (top->right == nullptr) {
+			return depthTreeSys(counter + 1, top->left);
+		}
+		else {
+			return max(depthTreeSys(counter + 1, top->left), depthTreeSys(counter + 1, top->right));
+		}
+	}
+	else return 0;
+}
+
+int depthTree(Node* top) {
+	// Пользовательская функция
+	int counter = 1;
+	return depthTreeSys(counter, top);
+}
+
+
+void printTree(char method, Node* top) {
+	// Пользовательская функция
+	// Вход: символ выбора метода печати, название дерева
+	// Выход: выбранным способом печатается дерево
+	switch (method) {
+	case 'p':
+		if (top != nullptr) {
+			cout << top->value << "(" << top->count << ")" << " ";
+			printTree(method, top->left);
+			printTree(method, top->right);
+		}
+		break;
+	case 'o':
+		if (top != nullptr) {
+			printTree(method, top->left);
+			printTree(method, top->right);
+			cout << top->value << "(" << top->count << ")" << " ";
+		}
+		break;
+	case 's':
+		if (top != nullptr) {
+			printTree(method, top->left);
+			cout << top->value << "(" << top->count << ")" << " ";
+			printTree(method, top->right);
+		}
+		break;
+	default:
+		cout << "Введен неверный символ!" << endl;
+		break;
+	}
+}
+
+bool searchNode(int input, Node* top) {
+	// Пользовательская функция
+	if (top != nullptr) {
+		if (input < top->value) {
+			return searchNode(input, top->left);
+		}
+		else if (input > top->value) {
+			return searchNode(input, top->right);
+		}
+		else return true;
+	}
+	else return false;
+}
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+	Node* root = new Node;
+	root = nullptr;
+	root = addNode(6, root);
+
+	printTree('p', root);
+	
+	cout << endl << "Глубина дерева = " << depthTree(root) << endl;
+	if (searchNode(9, root)) cout << "Узел = 9 есть в деревe";
+	else cout << "Узла = 9 нет в дереве";
+
+	return 0;
+}
