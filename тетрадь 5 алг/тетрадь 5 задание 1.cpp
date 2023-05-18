@@ -9,7 +9,7 @@ string encrypt(string input) {
     for (int i = 0; i < (int)input.length(); i++) {
         for (int j = 0; j < (int)alphabet1.length(); j++) {
             if (word[i] == alphabet[j]) {
-                word[i] = alphabet1[(j) % 26];
+                word[i] = alphabet1[(j+3) % 26];
 
                 break;
             }
@@ -26,7 +26,7 @@ string decrypt(string input) {
     for (int i = 0; i < (int)input.length(); i++) {
         for (int j = 0; j < (int)alphabet.length(); j++) {
             if (word[i] == alphabet[j]) {
-                word[i] = alphabet[(j) % 26];
+                word[i] = alphabet[(j-3) % 26];
                 break;
             }
         }
