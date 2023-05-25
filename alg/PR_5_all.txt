@@ -1,0 +1,51 @@
+#include <iostream>
+#include <ctime>
+#include <stack>
+
+using namespace std;
+
+string cesar(string input, int key)
+{
+	int* A = new int[input.size()];
+	int b;
+	string output = "";
+
+	for (int i = 0; i < input.size(); i++)
+	{
+		b = ((int)(tolower(input[i])) - 97 + key);
+		b = b % 26;
+		if (b < 0) b += 26;
+		output += (char)(b+97);
+	}
+	return output;
+}
+string zamena(string input)
+{
+	string shufr = "goydsipeluavcrjwxznhbqftmk";
+	string output = "";
+	int b;
+	for (int i = 0; i < input.size(); i++)
+	{
+		b = ((int)(tolower(input[i])) - 97);
+		output += shufr[b];
+	}
+	return output;
+}
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+	srand(time(NULL));
+
+	string S;
+	int key;
+
+	cin >> S >> key;
+	cout << cesar(S, key);
+	cout << "\n";
+	cout << zamena(S);
+
+
+	return 0;
+}
